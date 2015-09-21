@@ -1,0 +1,3 @@
+[submodule "catalog/model/payment/icepay"]
+	path = catalog/model/payment/icepay
+	url = https://github.com/icepay/icepay.git
