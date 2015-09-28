@@ -22,4 +22,7 @@ If you found a repeatable bug, and troubleshooting tips didn't help, then be sur
 
 ### Changelog
 
-No github releases yet.
+Version      | Release date   | Changes
+------------ | -------------- | ------------------------
+2.0.5        | 28/09/2015     | Payment module compatible up to OpenCart 2.0.3.1<br>Using new ICEPAY logos within Payment Module<br>Removed IP Check functionally for compatibility with the ICEPAY cloud.
+2.0.4        | -              | Initial unreleased commit to GitHub on 14/09/2015.
