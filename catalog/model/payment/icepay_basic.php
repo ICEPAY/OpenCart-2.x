@@ -294,7 +294,7 @@ class ModelPaymentIcepayBasic extends Model
 
                 $filter = Icepay_Api_Webservice::getInstance()->filtering();
                 $filter->loadFromArray(unserialize($storedPaymentMethods->row['raw_pm_data']));
-                $filter->filterByCurrency($_SESSION['currency'])
+                $filter->filterByCurrency($this->currency->getCode())
                     ->filterByCountry($address['iso_code_2'])
                     ->filterByAmount((int)(string)($total * 100));
 
