@@ -17,6 +17,8 @@ class ControllerPaymentIcepayBasic extends Controller
         $this->load->model('payment/icepay_basic');
         $this->load->model('checkout/order');
         $this->load->model('setting/setting');
+        // Load language files
+        $this->load->language('payment/icepay_basic');
     }
 
     public function saveMyPaymentMethods() {
