@@ -200,7 +200,16 @@ class ControllerPaymentIcepayBasic extends Controller
     }
 
     public function process() {
+
         $this->init();
+
+        if (!isset($this->session->data['order_id'])) {
+            $this->response->redirect($this->url->link('common/home'));
+        }
+
+        if (!isset($this->request->post['ic_issuer'])) {
+            $this->response->redirect($this->url->link('common/home'));
+        }
 
         $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
         $url = $this->model_payment_icepay_basic->getURL($order_info, $_POST['ic_issuer']);
