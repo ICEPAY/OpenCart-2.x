@@ -21,6 +21,14 @@ class ControllerPaymentIcepayBasic extends Controller
         $this->load->language('payment/icepay_basic');
     }
 
+    private function showErrorPage($data) {
+        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
+            $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data));
+        } else {
+            $this->response->setOutput($this->load->view('default/template/payment/icepay_error.tpl', $data));
+        }
+    }
+
     public function saveMyPaymentMethods() {
         if (!$this->session->data['ajax_ok'])
         {
@@ -192,8 +200,7 @@ class ControllerPaymentIcepayBasic extends Controller
     }
 
     public function process() {
-        $this->load->model('payment/icepay_basic');
-        $this->load->model('checkout/order');
+        $this->init();
 
         $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
         $url = $this->model_payment_icepay_basic->getURL($order_info, $_POST['ic_issuer']);
@@ -211,11 +218,8 @@ class ControllerPaymentIcepayBasic extends Controller
             $data['footer'] = $this->load->controller('common/footer');
             $data['header'] = $this->load->controller('common/header');
 
-            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
-                return $this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data);
-            } else {
-                return $this->load->view('default/template/payment/icepay_error.tpl', $data);
-            }
+            $this->showErrorPage($data);
+
         } else {
             return header("Location:" . $url);
         }
@@ -278,11 +282,9 @@ class ControllerPaymentIcepayBasic extends Controller
                     $data['footer'] = $this->load->controller('common/footer');
                     $data['header'] = $this->load->controller('common/header');
 
-                    if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
-                        $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data));
-                    } else {
-                        $this->response->setOutput($this->load->view('default/template/payment/icepay_error.tpl', $data));
-                    }
+                    $this->showErrorPage($data);
+
+
                 } else {
                     $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
                 }
