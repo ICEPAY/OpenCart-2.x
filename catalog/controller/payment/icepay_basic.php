@@ -283,7 +283,7 @@ class ControllerPaymentIcepayBasic extends Controller
                 $this->response->addHeader('HTTP/1.1 400 Bad Request');
                 $this->response->setOutput('Server response validation failed');
             }
-        } else {
+        } else { //Result
             $api = $this->model_payment_icepay_basic->loadResult();
 
             if ($api->validate()) {
@@ -298,6 +298,7 @@ class ControllerPaymentIcepayBasic extends Controller
                 }
 
                 $this->showErrorPage($api->getStatus(true));
+                return;
             }
 
             $this->showErrorPage("Server response validation failed");
