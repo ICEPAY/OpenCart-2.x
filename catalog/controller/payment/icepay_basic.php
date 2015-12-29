@@ -267,13 +267,14 @@ class ControllerPaymentIcepayBasic extends Controller
                 $api = $this->model_payment_icepay_basic->loadPostback();
             } catch (Exception $e) {
                 $this->response->addHeader('HTTP/1.1 400 Bad Request');
-                $this->response->setOutput($e->getMessage());
+                //$this->response->setOutput($e->getMessage()); // use for debugging purposes only
+                $this->response->setOutput("Failed to load postback");
             }
 
             if ($api->validate()) {
                 $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
 
-                if ($icepay_info["status"] == "NEW" || $api->canUpdateStatus($icepay_info["status"])) {
+                if ($icepay_info["status"] === "NEW" || $api->canUpdateStatus($icepay_info["status"])) {
                     $postback = $api->getPostback();
                     $this->model_payment_icepay_basic->updateStatus($api->getOrderID(), $api->getStatus(), $postback->transactionID);
                     $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
@@ -287,10 +288,10 @@ class ControllerPaymentIcepayBasic extends Controller
             $api = $this->model_payment_icepay_basic->loadResult();
 
             if ($api->validate()) {
-                if ($api->getStatus() != 'ERR') {
+                if ($api->getStatus() !== 'ERR') {
 
                     $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
-                    if ($icepay_info["status"] == "NEW") {
+                    if ($icepay_info["status"] === "NEW") {
 
                         $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
                         $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
