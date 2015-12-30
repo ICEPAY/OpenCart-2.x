@@ -291,7 +291,7 @@ class ControllerPaymentIcepayBasic extends Controller
                 if ($api->getStatus() !== 'ERR') {
 
                     $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
-                    if ($icepay_info["status"] === "NEW") {
+                    if ($icepay_info["status"] === "NEW" || $api->canUpdateStatus($icepay_info["status"])) {
 
                         $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
                         $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
