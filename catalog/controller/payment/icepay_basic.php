@@ -267,7 +267,6 @@ class ControllerPaymentIcepayBasic extends Controller
                 $api = $this->model_payment_icepay_basic->loadPostback();
             } catch (Exception $e) {
                 $this->response->addHeader('HTTP/1.1 400 Bad Request');
-                //$this->response->setOutput($e->getMessage()); // use for debugging purposes only
                 $this->response->setOutput("Failed to load postback");
             }
 
@@ -280,29 +279,37 @@ class ControllerPaymentIcepayBasic extends Controller
                     $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
                 }
             } else {
-                //Validation failed
                 $this->response->addHeader('HTTP/1.1 400 Bad Request');
                 $this->response->setOutput('Server response validation failed');
             }
         } else { //Result
             $api = $this->model_payment_icepay_basic->loadResult();
 
-            if ($api->validate()) {
-                if ($api->getStatus() !== 'ERR') {
+            if (!$api->validate()) {
+                $this->showErrorPage("Server response validation failed");
+                return;
+            }
 
-                    $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
-                    if ($icepay_info["status"] === "NEW" || $api->canUpdateStatus($icepay_info["status"])) {
-
-                        $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
-                        $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
-                    }
-                }
-
+            if ($api->getStatus() === Icepay_StatusCode::ERROR) {
                 $this->showErrorPage($api->getStatus(true));
                 return;
             }
 
-            $this->showErrorPage("Server response validation failed");
+            $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
+
+            if ($icepay_info["status"] === "NEW" && $api->getStatus() !== $icepay_info["status"]) {
+                //we haven't received Postback Notification yet or status changed
+                $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
+                $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
+            }
+            else if ($icepay_info["status"] === Icepay_StatusCode::SUCCESS || $icepay_info["status"] === Icepay_StatusCode::OPEN || $icepay_info["status"] === Icepay_StatusCode::VALIDATE) {
+               //we've received Postback Notification before processing this request (Result)
+                $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
+            }
+
+            $this->showErrorPage($api->getStatus(true));
+            return;
+
         }
     }
 }
