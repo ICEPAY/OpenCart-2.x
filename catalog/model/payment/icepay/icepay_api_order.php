@@ -120,7 +120,7 @@ class Icepay_Order_Helper {
     }
 
     private static function explodeStreetAddress($streetAddress) {
-        $pattern = '#^([a-z0-9 [:punct:]\']*) ([0-9]{1,5})([a-z0-9 \-/]{0,})$#i';
+        $pattern = '#^(.+\D+){1} ([0-9]{1,})\s?([\s\/]?[0-9]{0,}?[\s\S]{0,}?)?$#i';
 
         $aMatch = array();
 

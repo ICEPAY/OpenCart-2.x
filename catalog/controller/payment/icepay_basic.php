@@ -4,25 +4,50 @@
  * @package       ICEPAY Payment Module for OpenCart
  * @author        Ricardo Jacobs <ricardo.jacobs@icepay.com>
  * @copyright     (c) 2015 ICEPAY. All rights reserved.
- * @version       2.0.6 September 2015
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
-define('ICEPAY_MODULE_VERSION', '2.0.5');
+define('ICEPAY_MODULE_VERSION', '2.0.7');
 
 class ControllerPaymentIcepayBasic extends Controller
 {
     protected $api;
 
-    private function init() {
+    private function init()
+    {
         $this->load->model('payment/icepay_basic');
         $this->load->model('checkout/order');
         $this->load->model('setting/setting');
+        // Load language files
+        $this->load->language('payment/icepay_basic');
     }
 
-    public function saveMyPaymentMethods() {
-        if (!$this->session->data['ajax_ok'])
-        {
+    private function showErrorPage($message)
+    {
+
+        $data['heading_title'] = $this->language->get('error_header');
+        $data['text_message'] = $message;
+        $data['button_continue'] = $this->language->get('button_continue');
+        $data['continue'] = $this->url->link('checkout/checkout', '', 'SSL');
+
+        $data['column_left'] = $this->load->controller('common/column_left');
+        $data['column_right'] = $this->load->controller('common/column_right');
+        $data['content_top'] = $this->load->controller('common/content_top');
+        $data['content_bottom'] = $this->load->controller('common/content_bottom');
+        $data['footer'] = $this->load->controller('common/footer');
+        $data['header'] = $this->load->controller('common/header');
+
+        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
+            $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data));
+        } else {
+            $this->response->setOutput($this->load->view('default/template/payment/icepay_error.tpl', $data));
+        }
+    }
+
+
+    public function saveMyPaymentMethods()
+    {
+        if (!$this->session->data['ajax_ok']) {
             return;
         }
 
@@ -79,7 +104,8 @@ class ControllerPaymentIcepayBasic extends Controller
         die();
     }
 
-    public function getMyPaymentMethods() {
+    public function getMyPaymentMethods() 
+    {
         if (!$this->session->data['ajax_ok'])
             return;
 
@@ -190,37 +216,31 @@ class ControllerPaymentIcepayBasic extends Controller
         die();
     }
 
-    public function process() {
-        $this->load->model('payment/icepay_basic');
-        $this->load->model('checkout/order');
+    public function process() 
+    {
+
+        $this->init();
+
+        if (!isset($this->session->data['order_id'])) {
+            $this->response->redirect($this->url->link('common/home'));
+        }
+
+        if (!isset($this->request->post['ic_issuer'])) {
+            $this->response->redirect($this->url->link('common/home'));
+        }
 
         $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-        $url = $this->model_payment_icepay_basic->getURL($order_info, $_POST['ic_issuer']);
+        $url = $this->model_payment_icepay_basic->getURL($order_info, $this->request->post['ic_issuer']);
 
         if (!$url) {
-            $data['heading_title'] = $this->language->get('error_header');
-            $data['text_message'] = $_SESSION['ICEPAY_ERROR'];
-            $data['button_continue'] = $this->language->get('button_continue');
-            $data['continue'] = $this->url->link('checkout/checkout', '', 'SSL');
-
-            $data['column_left'] = $this->load->controller('common/column_left');
-            $data['column_right'] = $this->load->controller('common/column_right');
-            $data['content_top'] = $this->load->controller('common/content_top');
-            $data['content_bottom'] = $this->load->controller('common/content_bottom');
-            $data['footer'] = $this->load->controller('common/footer');
-            $data['header'] = $this->load->controller('common/header');
-
-            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
-                return $this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data);
-            } else {
-                return $this->load->view('default/template/payment/icepay_error.tpl', $data);
-            }
+            $this->showErrorPage($_SESSION['ICEPAY_ERROR']);
         } else {
             return header("Location:" . $url);
         }
     }
 
-    public function index() {
+    public function index()
+    {
         $this->load->model('payment/icepay_basic');
 
         $paymentMethodName = $this->model_payment_icepay_basic->getPaymentMethodName($this->pmCode);
@@ -237,7 +257,8 @@ class ControllerPaymentIcepayBasic extends Controller
         return $this->load->view($this->template, $data);
     }
 
-    public function result() {
+    public function result()
+    {
         $this->init();
 
         // Postback or Result
@@ -245,47 +266,50 @@ class ControllerPaymentIcepayBasic extends Controller
             try {
                 $api = $this->model_payment_icepay_basic->loadPostback();
             } catch (Exception $e) {
-                echo $e->getMessage();
+                $this->response->addHeader('HTTP/1.1 400 Bad Request');
+                $this->response->setOutput("Failed to load postback");
             }
 
             if ($api->validate()) {
                 $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
 
-                if ($icepay_info["status"] == "NEW" || $api->canUpdateStatus($icepay_info["status"])) {
+                if ($icepay_info["status"] === "NEW" || $api->canUpdateStatus($icepay_info["status"])) {
                     $postback = $api->getPostback();
                     $this->model_payment_icepay_basic->updateStatus($api->getOrderID(), $api->getStatus(), $postback->transactionID);
                     $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
                 }
             } else {
-                $this->model_payment_icepay_basic->updateStatus($api->getOrderID(), $api->getStatus(), $postback->transactionID);
-                $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
+                $this->response->addHeader('HTTP/1.1 400 Bad Request');
+                $this->response->setOutput('Server response validation failed');
             }
-        } else {
+        } else { //Result
             $api = $this->model_payment_icepay_basic->loadResult();
 
-            if ($api->validate()) {
-                if ($api->getStatus() == 'ERR') {
-                    $data['heading_title'] = $this->language->get('error_header');
-                    $data['text_message'] = $api->getStatus(true);
-                    $data['button_continue'] = $this->language->get('button_continue');
-                    $data['continue'] = $this->url->link('checkout/checkout', '', 'SSL');
-
-                    $data['column_left'] = $this->load->controller('common/column_left');
-                    $data['column_right'] = $this->load->controller('common/column_right');
-                    $data['content_top'] = $this->load->controller('common/content_top');
-                    $data['content_bottom'] = $this->load->controller('common/content_bottom');
-                    $data['footer'] = $this->load->controller('common/footer');
-                    $data['header'] = $this->load->controller('common/header');
-
-                    if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
-                        $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data));
-                    } else {
-                        $this->response->setOutput($this->load->view('default/template/payment/icepay_error.tpl', $data));
-                    }
-                } else {
-                    $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
-                }
+            if (!$api->validate()) {
+                $this->showErrorPage("Server response validation failed");
+                return;
             }
+
+            if ($api->getStatus() === Icepay_StatusCode::ERROR) {
+                $this->showErrorPage($api->getStatus(true));
+                return;
+            }
+
+            $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
+
+            if ($icepay_info["status"] === "NEW" || $api->getStatus() !== $icepay_info["status"]) {
+                //we haven't received Postback Notification yet or status changed
+                $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
+                $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
+            }
+            else if ($icepay_info["status"] === Icepay_StatusCode::SUCCESS || $icepay_info["status"] === Icepay_StatusCode::OPEN || $icepay_info["status"] === Icepay_StatusCode::VALIDATE) {
+               //we've received Postback Notification before processing this request (Result)
+                $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
+            }
+
+            $this->showErrorPage($api->getStatus(true));
+            return;
+
         }
     }
 }

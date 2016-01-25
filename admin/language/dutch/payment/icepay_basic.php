@@ -4,7 +4,6 @@
  * @package       ICEPAY Payment Module for OpenCart
  * @author        Ricardo Jacobs <ricardo.jacobs@icepay.com>
  * @copyright     (c) 2015 ICEPAY. All rights reserved.
- * @version       2.0.6 September 2015
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
@@ -13,8 +12,8 @@ $_['heading_title'] = 'ICEPAY';
 
 // Tabs
 $_['tab_general'] = 'Merchant instellingen';
-$_['tab_statuscodes'] = 'Statuscodes';
-$_['tab_paymentmethods'] = 'Betaalmethodes';
+$_['tab_statuscodes'] = 'Status Codes';
+$_['tab_paymentmethods'] = 'Betaal Methodes';
 $_['tab_about'] = 'Informatie';
 
 // Text
@@ -26,7 +25,7 @@ $_['text_icepay_basic'] = '<img src="view/image/payment/icepay_basic.png" alt="I
 $_['text_about_logo'] = '<a onclick="window.open(\'http://www.icepay.com/webshop-modules/ideal-voor-opencart/\');"><img src="view/image/payment/icepay-logo.png" alt="ICEPAY" title="ICEPAY" border="0"/></a>';
 $_['text_about_link'] = '<a onclick="window.open(\'http://www.icepay.com/\');">www.icepay.com</a>';
 $_['text_about_support'] = 'Offici&euml;le ICEPAY module';
-$_['text_about_support_link'] = '<a onclick="window.open(\'http://www.icepay.com/downloads/pdf/manuals/opencart/icepay-manual-opencart.pdf\');">Handleiding (Engels)</a>';
+$_['text_about_support_link'] = '<a onclick="window.open(\'http://www.icepay.com/downloads/pdf/manuals/opencart/icepay-manual-opencart-2.pdf\');">Handleiding (Engels)</a>';
 
 // Entry
 $_['entry_url'] = 'URL voor Succes/Error/Postback:';

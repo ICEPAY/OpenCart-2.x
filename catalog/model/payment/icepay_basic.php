@@ -4,7 +4,6 @@
  * @package       ICEPAY Payment Module for OpenCart
  * @author        Ricardo Jacobs <ricardo.jacobs@icepay.com>
  * @copyright     (c) 2015 ICEPAY. All rights reserved.
- * @version       2.0.6 September 2015
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
@@ -295,7 +294,7 @@ class ModelPaymentIcepayBasic extends Model
 
                 $filter = Icepay_Api_Webservice::getInstance()->filtering();
                 $filter->loadFromArray(unserialize($storedPaymentMethods->row['raw_pm_data']));
-                $filter->filterByCurrency($_SESSION['currency'])
+                $filter->filterByCurrency($this->currency->getCode())
                     ->filterByCountry($address['iso_code_2'])
                     ->filterByAmount((int)(string)($total * 100));
 
