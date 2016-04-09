@@ -24,6 +24,8 @@ If you found a repeatable bug, and troubleshooting tips didn't help, then be sur
 
 Version      | Release date   | Changes
 ------------ | -------------- | ------------------------
+2.0.8        | 09/04/2016     | Payment module compatible up to OpenCart 2.2.0.0
+2.0.7        | 25/01/2016     | Payment module compatible up to OpenCart 2.1.0.2<br>Bug Fixes (see details in Development branch)
 2.0.6        | 22/10/2015     | Fix issue with get methods from ICEPAY server
 2.0.5        | 28/09/2015     | Payment module compatible up to OpenCart 2.0.3.1<br>Using new ICEPAY logos within Payment Module<br>Removed IP Check functionally for compatibility with the ICEPAY cloud.
 2.0.4        | -              | Initial unreleased commit to GitHub on 14/09/2015.

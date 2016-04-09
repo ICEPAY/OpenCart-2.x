@@ -3,14 +3,14 @@
 /**
  * @package       ICEPAY Payment Module for OpenCart
  * @author        Ricardo Jacobs <ricardo.jacobs@icepay.com>
- * @copyright     (c) 2015 ICEPAY. All rights reserved.
+ * @copyright     (c) 2016 ICEPAY. All rights reserved.
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
 class ControllerPaymentIcepayBasic extends Controller
 {
     private $error = array();
-    private $_version = "2.0.7";
+    private $_version = "2.0.8";
 
     public function install() {
         // Create order table

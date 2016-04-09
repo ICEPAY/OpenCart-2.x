@@ -2,7 +2,7 @@
 /**
  * @package       ICEPAY Payment Module for OpenCart
  * @author        Stanislav Tsygankov
- * @copyright     (c) 2015 ICEPAY. All rights reserved.
+ * @copyright     (c) 2016 ICEPAY. All rights reserved.
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
