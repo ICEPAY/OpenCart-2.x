@@ -3,7 +3,7 @@
 /**
  * @package       ICEPAY Payment Module for OpenCart
  * @author        Ricardo Jacobs <ricardo.jacobs@icepay.com>
- * @copyright     (c) 2015 ICEPAY. All rights reserved.
+ * @copyright     (c) 2016 ICEPAY. All rights reserved.
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
@@ -62,16 +62,21 @@ class ModelPaymentIcepayBasic extends Model
         $total = $this->currency->format($order['total'], $order['currency_code'], $order['currency_value'], false);
         $total = (int)(string)($total * 100);
 
-        $paymentMethodID = substr($order['payment_code'], -1);
+        $paymentMethodID = str_replace('icepay_pm_', "",  $order['payment_code']);
         $paymentMethodCode = $this->getPaymentMethodCode($paymentMethodID);
+
+        $language = $this->session->data['language'];
+        if (version_compare(VERSION, '2.2') >= 0) {
+            $language = substr($language, 0, 2);
+        }
 
         $paymentObj = new Icepay_PaymentObject();
         $paymentObj->setOrderID($order["order_id"])
             ->setReference($order["order_id"])
             ->setAmount($total)
-            ->setCurrency($this->currency->getCode())
+            ->setCurrency($this->session->data['currency'])
             ->setCountry($order['payment_iso_code_2'])
-            ->setLanguage($this->session->data['language'])
+            ->setLanguage($language)
             ->setPaymentMethod($paymentMethodCode)
             ->setIssuer($issuer);
 
@@ -294,7 +299,7 @@ class ModelPaymentIcepayBasic extends Model
 
                 $filter = Icepay_Api_Webservice::getInstance()->filtering();
                 $filter->loadFromArray(unserialize($storedPaymentMethods->row['raw_pm_data']));
-                $filter->filterByCurrency($this->currency->getCode())
+                $filter->filterByCurrency($this->session->data['currency'])
                     ->filterByCountry($address['iso_code_2'])
                     ->filterByAmount((int)(string)($total * 100));
 
@@ -332,15 +337,6 @@ class ModelPaymentIcepayBasic extends Model
         return '';
     }
 
-    public function getTemplate()
-    {
-        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_basic.tpl'))
-        {
-            return $this->config->get('config_template') . '/template/payment/icepay_basic.tpl';
-        }
-
-        return 'default/template/payment/icepay_basic.tpl';
-    }
 
     public function getPaymentMethodName($pmID)
     {

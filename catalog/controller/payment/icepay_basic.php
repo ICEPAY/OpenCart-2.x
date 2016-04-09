@@ -3,11 +3,11 @@
 /**
  * @package       ICEPAY Payment Module for OpenCart
  * @author        Ricardo Jacobs <ricardo.jacobs@icepay.com>
- * @copyright     (c) 2015 ICEPAY. All rights reserved.
+ * @copyright     (c) 2016 ICEPAY. All rights reserved.
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
-define('ICEPAY_MODULE_VERSION', '2.0.7');
+define('ICEPAY_MODULE_VERSION', '2.0.8');
 
 class ControllerPaymentIcepayBasic extends Controller
 {
@@ -37,11 +37,16 @@ class ControllerPaymentIcepayBasic extends Controller
         $data['footer'] = $this->load->controller('common/footer');
         $data['header'] = $this->load->controller('common/header');
 
-        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
-            $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data));
+        if (version_compare(VERSION, '2.2') < 0) {
+            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
+                $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data));
+            } else {
+                $this->response->setOutput($this->load->view('default/template/payment/icepay_error.tpl', $data));
+            }
         } else {
-            $this->response->setOutput($this->load->view('default/template/payment/icepay_error.tpl', $data));
+            $this->response->setOutput($this->load->view('payment/icepay_error', $data));
         }
+
     }
 
 
@@ -245,7 +250,6 @@ class ControllerPaymentIcepayBasic extends Controller
 
         $paymentMethodName = $this->model_payment_icepay_basic->getPaymentMethodName($this->pmCode);
         $issuers = $this->model_payment_icepay_basic->getIssuers($this->pmCode);
-        $this->template = $this->model_payment_icepay_basic->getTemplate();
 
         $baseURL = defined('HTTPS_SERVER') ? HTTPS_SERVER : HTTP_SERVER;
 
@@ -254,7 +258,15 @@ class ControllerPaymentIcepayBasic extends Controller
         $data['issuers'] = $issuers;
         $data['button_confirm'] = $this->language->get('button_confirm');
 
-        return $this->load->view($this->template, $data);
+        if (version_compare(VERSION, '2.2') < 0) {
+            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_basic.tpl')) {
+                return $this->load->view($this->config->get('config_template') . '/template/payment/icepay_basic.tpl', $data);
+            } else {
+                return $this->load->view('default/template/payment/icepay_basic.tpl', $data);
+            }
+        } else {
+            return $this->load->view('payment/icepay_basic', $data);
+        }
     }
 
     public function result()
