@@ -33,6 +33,7 @@
                         <li class="active"><a href="#tab-general" data-toggle="tab"><?php echo $tab_general; ?></a></li>
                         <li><a href="#tab-statuscodes" data-toggle="tab"><?php echo $tab_statuscodes; ?></a></li>
                         <li><a href="#tab-paymentmethods" data-toggle="tab"><?php echo $tab_paymentmethods; ?></a></li>
+                        <li><a href="#tab-sendcloud" data-toggle="tab"><?php echo $tab_sendcloud; ?></a></li>
                         <li><a href="#tab-about" data-toggle="tab"><?php echo $tab_about; ?></a></li>
                     </ul>
 
@@ -223,6 +224,53 @@
                                     </td>
                                 </tr>
                             </table>
+                        </div>
+
+                        <div class="tab-pane" id="tab-sendcloud">
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label" for="sendcloud_api_key"><?php echo $entry_sendcloud_api_key; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" name="icepay_sendcloud_api_key" value="<?php echo $icepay_sendcloud_api_key; ?>" id="icepay_sendcloud_api_key" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label" for="icepay_sendcloud_api_secret"><?php echo $entry_sendcloud_api_secret; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" name="icepay_sendcloud_api_secret" value="<?php echo $icepay_sendcloud_api_secret; ?>" id="icepay_sendcloud_api_secret" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="icepay_sendcloud_default_status"><?php echo $entry_sendcloud_default_status; ?></label>
+
+                                <div class="col-sm-10">
+                                    <select name="icepay_sendcloud_default_status" id="icepay_sendcloud_default_status" class="form-control">
+                                        <option value=""><?php echo $icepay_sendcloud_default_status; ?></option>
+                                        <?php
+                                            foreach ($sendcloud_statuses as $status) {
+                                            ?>
+                                                <option <?php if ($icepay_sendcloud_default_status == $status['order_status_id']) { ?>SELECTED<?php } ?> value="<?php echo $status['order_status_id']; ?>"><?php echo $status['name']; ?></option>
+                                                <?php
+                                            }
+                                            ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="icepay_sendcloud_address2_as_housenumber"><?php echo $entry_sendcloud_address2_as_housenumber; ?></label>
+                                <div class="col-sm-10">
+                                    <select name="icepay_sendcloud_address2_as_housenumber" class="form-control">
+                                        <option value="">
+                                            <?php echo $text_disabled; ?>
+                                        </option>
+                                        <option <?php if($icepay_sendcloud_address2_as_housenumber){ ?> selected <?php }?> value = "true">
+                                        <?php echo $text_enabled; ?>
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="tab-pane" id="tab-about">

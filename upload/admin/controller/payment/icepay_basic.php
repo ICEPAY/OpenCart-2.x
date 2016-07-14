@@ -134,6 +134,11 @@ class ControllerPaymentIcepayBasic extends Controller
             "icepay_err_status_id",
             "icepay_cback_status_id",
             "icepay_refund_status_id",
+            "icepay_sendcloud_api_key",
+            "icepay_sendcloud_api_secret",
+            "icepay_sendcloud_default_status",
+            "icepay_sendcloud_default_status",
+            "icepay_sendcloud_address2_as_housenumber"
         );
 
 
@@ -163,6 +168,13 @@ class ControllerPaymentIcepayBasic extends Controller
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
+
+        //SENDCLOUD
+        $statuses = $this->db->query('SELECT * FROM ' . DB_PREFIX . 'order_status');
+        $data['sendcloud_statuses'] = $statuses->rows;
+        //END SENDCLOUD
+
+
 
         $this->response->setOutput($this->load->view('payment/icepay_basic.tpl', $data));
     }
@@ -229,6 +241,10 @@ class ControllerPaymentIcepayBasic extends Controller
             "entry_refund_status",
             "entry_checkout_title",
             "entry_checkout_icon",
+            "entry_sendcloud_api_key",
+            "entry_sendcloud_api_secret",
+            "entry_sendcloud_default_status",
+            "entry_sendcloud_address2_as_housenumber",
             "text_yes",
             "text_no",
             "text_enabled",
@@ -242,6 +258,7 @@ class ControllerPaymentIcepayBasic extends Controller
             "tab_general",
             "tab_statuscodes",
             "tab_paymentmethods",
+            "tab_sendcloud",
             "tab_about",
         );
 
