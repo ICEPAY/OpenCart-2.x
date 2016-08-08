@@ -15,6 +15,7 @@ $_['tab_general'] = 'Merchant instellingen';
 $_['tab_statuscodes'] = 'Status Codes';
 $_['tab_paymentmethods'] = 'Betaal Methodes';
 $_['tab_about'] = 'Informatie';
+$_['tab_sendcloud'] = 'SendCloud';
 
 // Text
 $_['text_payment'] = 'Betaling';
@@ -48,3 +49,19 @@ $_['error_merchantid'] = 'ICEPAY Merchant ID is vereist!';
 $_['error_merchantid_incorrect'] = 'ICEPAY Merchant ID dient 5 getallen te bevatten!';
 $_['error_secretcode'] = 'ICEPAY SecretCode is vereist!';
 $_['error_secretcode_incorrect'] = 'ICEPAY Merchant ID dient exact 40 karakters lang te zijn.';
+
+//SendCloud Settings
+$_['entry_sendcloud_api_key'] = 'API Public Key:';
+$_['entry_sendcloud_api_secret'] = 'API Secret Key:';
+$_['entry_sendcloud_default_status'] = 'Zet status van bestelling automatisch op:';
+$_['entry_sendcloud_default_status_placeholder']  = '---';
+$_['entry_sendcloud_address2_as_housenumber']  = 'Gebruik adres 2 als huisnummer';
+
+$_['error_sendcloud_no_api_settings'] = 'Fout: Geen API public en/of secret key gevonden.';
+$_['error_sendcloud_no_orders'] = 'Fout: Je hebt geen orders geselecteerd.';
+$_['error_sendcloud_order_no_shipping'] = 'Fout: Geen verzendgegevens voor orders: ';
+$_['error_sendcloud_process_orders'] = "Fout: Kan de volgende order id(s) niet verwerken: ";
+$_['error_sendcloud_api_error_reason'] = "Om de volgende reden: ";
+
+$_['text_sendcloud_success'] = 'Orders verzonden naar SendCloud. <a href="https://panel.sendcloud.nl" target="_blank">Ga naar SendCloud</a>';
+$_['text_sendcloud_log_message'] = 'Overgezet naar SendCloud';

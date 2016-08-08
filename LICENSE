@@ -1,4 +1,4 @@
-Copyright (c) 2015, ICEPAY B.V.
+Copyright (c) 2016, ICEPAY B.V.
 All rights reserved.
 
 BSD-2-Clause

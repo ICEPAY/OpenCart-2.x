@@ -137,7 +137,6 @@ class ControllerPaymentIcepayBasic extends Controller
             "icepay_sendcloud_api_key",
             "icepay_sendcloud_api_secret",
             "icepay_sendcloud_default_status",
-            "icepay_sendcloud_default_status",
             "icepay_sendcloud_address2_as_housenumber"
         );
 
@@ -244,6 +243,7 @@ class ControllerPaymentIcepayBasic extends Controller
             "entry_sendcloud_api_key",
             "entry_sendcloud_api_secret",
             "entry_sendcloud_default_status",
+            "entry_sendcloud_default_status_placeholder",
             "entry_sendcloud_address2_as_housenumber",
             "text_yes",
             "text_no",

@@ -15,6 +15,7 @@ $_['tab_general'] = 'Merchant Settings';
 $_['tab_statuscodes'] = 'Status Codes';
 $_['tab_paymentmethods'] = 'Payment Methods';
 $_['tab_about'] = 'About';
+$_['tab_sendcloud'] = 'SendCloud';
 
 // Text
 $_['text_payment'] = 'Payment';
@@ -48,3 +49,21 @@ $_['error_merchantid'] = 'ICEPAY Merchant ID is required!';
 $_['error_merchantid_incorrect'] = 'ICEPAY Merchant ID must contain 5 digits.';
 $_['error_secretcode'] = 'ICEPAY SecretCode is required!';
 $_['error_secretcode_incorrect'] = 'ICEPAY Merchant ID must contain exactly 40 characters.';
+
+
+//SendCloud Settings
+$_['entry_sendcloud_api_key'] = 'API Public Key:';
+$_['entry_sendcloud_api_secret'] = 'API Secret Key:';
+$_['entry_sendcloud_default_status'] = 'Set the order state after transport to';
+$_['entry_sendcloud_default_status_placeholder']  = '---';
+$_['entry_sendcloud_address2_as_housenumber']  = 'Use address 2 as housenumber';
+
+$_['error_sendcloud_no_api_settings'] = 'Error: No api public and/or secret key found.';
+$_['error_sendcloud_no_orders'] = 'Error: No orders selected.';
+$_['error_sendcloud_order_no_shipping'] = 'Error: No shipping details for order(s): ';
+$_['error_sendcloud_process_orders'] = "Error: Can't process order id(s): ";
+$_['error_sendcloud_api_error_reason'] = "Due to the following error: ";
+
+$_['text_sendcloud_success'] = 'Orders successfully sent to SendCloud. <a href="https://panel.sendcloud.nl" target="_blank">Go to SendCloud</a>';
+$_['text_sendcloud_log_message'] = 'Transported to SendCloud.';
+

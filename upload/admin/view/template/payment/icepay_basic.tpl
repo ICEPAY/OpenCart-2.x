@@ -246,7 +246,7 @@
 
                                 <div class="col-sm-10">
                                     <select name="icepay_sendcloud_default_status" id="icepay_sendcloud_default_status" class="form-control">
-                                        <option value=""><?php echo $icepay_sendcloud_default_status; ?></option>
+                                        <option value=""><?php echo $entry_sendcloud_default_status_placeholder; ?></option>
                                         <?php
                                             foreach ($sendcloud_statuses as $status) {
                                             ?>

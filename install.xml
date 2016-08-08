@@ -9,7 +9,7 @@
 	<file path="admin/view/template/sale/order_list.tpl">
 		<operation>
 			<search><![CDATA[<button type="submit" id="button-shipping"]]></search>
-			<add position="before"><![CDATA[<button id="button-sendcloud" title = "Orders doorsturen naar SendCloud" class="btn btn-info" form="form-order" formaction="<?php echo $sendcloud_url; ?>" form="form-order" type="submit" onclick="$('#form-order').attr('target', '_self');"  style="padding:4px 10px 3px 9px"><img src="../image/module/sendcloud/sendcloud.svg" style="width:111px; height:26px;"></button>]]></add>
+			<add position="before"><![CDATA[<button id="button-sendcloud" title = "Orders doorsturen naar SendCloud" class="btn btn-info" form="form-order" type="button" style="padding:4px 10px 3px 9px"><img src="../image/module/sendcloud/sendcloud.svg" style="width:111px; height:26px;"></button>]]></add>
 		</operation>
 		<operation>
 			<search><![CDATA[$('#button-shipping, #button-invoice').prop('disabled', true);]]></search>
@@ -30,15 +30,39 @@
 				});]]>
 			</add>
 		</operation>
-	</file>
-	<file path="admin/controller/sale/order.php">
 		<operation>
-			<search><![CDATA[$data['invoice'] = $this->url->link('sale/order/invoice', 'token=' . $this->session->data['token'], true);]]></search>
-			<add position="after"><![CDATA[$data['sendcloud_url'] = $this->url->link('module/sendcloud/bulk', 'token=' . $this->session->data['token'], true);]]></add>
-		</operation>
-		<operation>
-			<search><![CDATA[$data['invoice'] = $this->url->link('sale/order/invoice', 'token=' . $this->session->data['token'], 'SSL');]]></search>
-			<add position="after"><![CDATA[$data['sendcloud_url'] = $this->url->link('module/sendcloud/bulk', 'token=' . $this->session->data['token'], 'SSL');]]></add>
+			<search><![CDATA[$(document).delegate('#button-ip-add', 'click', function() {]]></search>
+			<add position="before"><![CDATA[$(document).delegate('#button-sendcloud', 'click', function () {
+
+	  if (!$(this).hasClass('disabled')) {
+		  $.ajax({
+			  url: 'index.php?route=module/sendcloud/bulk&token=<?php echo $token; ?>',
+			  dataType: 'json',
+			  type: 'POST',
+			  data: $("#form-order").serialize(),
+			  beforeSend: function () {
+				  $('#button-sendcloud').button('loading');
+			  },
+			  complete: function () {
+				  $('#button-sendcloud').button('reset');
+			  },
+			  success: function (json) {
+				  $('.alert').remove();
+
+				  if (json['error']) {
+					  $('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+				  }
+				  else if (json['success']) {
+					  $('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+				  }
+			  },
+			  error: function (xhr, ajaxOptions, thrownError) {
+				  alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			  }
+		  });
+	  }
+	  return false;
+});]]></add>
 		</operation>
 	</file>
 </modification>
