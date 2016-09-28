@@ -49,6 +49,7 @@ $_['error_merchantid'] = 'ICEPAY Merchant ID is required!';
 $_['error_merchantid_incorrect'] = 'ICEPAY Merchant ID must contain 5 digits.';
 $_['error_secretcode'] = 'ICEPAY SecretCode is required!';
 $_['error_secretcode_incorrect'] = 'ICEPAY Merchant ID must contain exactly 40 characters.';
+$_['error_no_api_settings'] = 'Error: No merchant ID and/or secret code found.';
 
 
 //SendCloud Settings

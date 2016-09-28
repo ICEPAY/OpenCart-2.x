@@ -11,6 +11,10 @@ class ControllerModuleSendcloud extends Controller {
 
 		$json = array();
 
+		if (empty($icepay_sendcloud_settings['icepay_merchantid']) || empty($icepay_sendcloud_settings['icepay_secretcode'])) {
+			$json['error'] = $this->language->get('error_no_api_settings');
+		}
+
 		if (empty($icepay_sendcloud_settings['icepay_sendcloud_api_key']) || empty($icepay_sendcloud_settings['icepay_sendcloud_api_secret'])) {
 			$json['error'] = $this->language->get('error_sendcloud_no_api_settings');
 		} else if (!isset($_POST['selected'])) {
