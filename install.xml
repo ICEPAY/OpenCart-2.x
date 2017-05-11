@@ -3,7 +3,7 @@
 	<id>ICEPAY OpenCart 2 Extension</id>
 	<name>ICEPAY OpenCart 2 Extension</name>
 	<code>ICEPAY_OpenCart_2_OCmod</code>
-	<version>2.0.9</version>
+	<version>2.1.0</version>
 	<author>ICEPAY B.V.</author>
 	<link>https://icepay.com</link>
 	<file path="admin/view/template/sale/order_list.tpl">
