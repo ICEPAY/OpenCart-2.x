@@ -7,7 +7,7 @@
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
-class ControllerPaymentIcepayBasic extends Controller
+class ControllerExtensionPaymentIcepayBasic extends Controller
 {
     private $error = array();
     private $_version = "2.1.0";
@@ -82,7 +82,7 @@ class ControllerPaymentIcepayBasic extends Controller
         $this->session->data['ajax_ok'] = true;
 
         // Load language files
-        $this->load->language('payment/icepay_basic');
+        $this->load->language('extension/payment/icepay_basic');
 
         // Set html title
         $this->document->setTitle($this->language->get('heading_title'));
@@ -99,18 +99,12 @@ class ControllerPaymentIcepayBasic extends Controller
         foreach ($this->getIcepayLanguageKeys() as $lang) {
             $data[$lang] = $this->language->get($lang);
         }
-/*
-        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-            $this->model_setting_setting->editSetting('icepay_basic', $this->request->post);
 
-            $this->redirect($this->url->link('payment/icepay_basic', 'token=' . $this->session->data['token'], 'SSL'));
-        }
-*/
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			$this->model_setting_setting->editSetting('icepay', $this->request->post);
 			$this->session->data['success'] = $this->language->get('text_success');
 
-			$this->response->redirect($this->url->link('extension/payment', 'token=' . $this->session->data['token'], 'SSL'));
+            $this->response->redirect($this->url->link('extension/payment/icepay_basic', 'token=' . $this->session->data['token'], true));
 		}
 
         $data["text_version"] = $this->_version;
@@ -119,8 +113,8 @@ class ControllerPaymentIcepayBasic extends Controller
             $data['error_warning'] = array_shift($this->error);
         }
 
-        $data['action'] = $this->url->link('payment/icepay_basic', 'token=' . $this->session->data['token'], 'SSL');
-        $data['cancel'] = $this->url->link('extension/payment', 'token=' . $this->session->data['token'], 'SSL');
+        $data['action'] = $this->url->link('extension/payment/icepay_basic', 'token=' . $this->session->data['token'], true);
+        $data['cancel'] = $this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=payment', true);
 
         $settings = array(
             "icepay_merchantid",
@@ -157,9 +151,9 @@ class ControllerPaymentIcepayBasic extends Controller
         // Fetch stores
         $data['stores'] = $this->model_setting_store->getStores();
 
-        $data["icepay_url"] = $baseURL . 'index.php?route=payment/icepay_basic/result';
-        $data['icepay_ajax_get'] = $baseURL . 'index.php?route=payment/icepay_basic/getMyPaymentMethods';
-        $data['icepay_ajax_save'] = $baseURL . 'index.php?route=payment/icepay_basic/saveMyPaymentMethods';
+        $data["icepay_url"] = $baseURL . 'index.php?route=extension/payment/icepay_basic/result';
+        $data['icepay_ajax_get'] = $baseURL . 'index.php?route=extension/payment/icepay_basic/getMyPaymentMethods';
+        $data['icepay_ajax_save'] = $baseURL . 'index.php?route=extension/payment/icepay_basic/saveMyPaymentMethods';
 
         $this->load->model('localisation/order_status');
         $data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
@@ -175,11 +169,11 @@ class ControllerPaymentIcepayBasic extends Controller
 
 
 
-        $this->response->setOutput($this->load->view('payment/icepay_basic.tpl', $data));
+        $this->response->setOutput($this->load->view('extension/payment/icepay_basic.tpl', $data));
     }
 
     private function validate() {
-        if (!$this->user->hasPermission('modify', 'payment/icepay_basic'))
+        if (!$this->user->hasPermission('modify', 'extension/payment/icepay_basic'))
             $this->error['warning'] = $this->language->get('error_permission');
 
         if (!$this->request->post['icepay_merchantid']) {
@@ -209,18 +203,19 @@ class ControllerPaymentIcepayBasic extends Controller
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('text_home'),
-            'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL')
+            'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
         );
 
         $data['breadcrumbs'][] = array(
-            'text' => $this->language->get('text_payment'),
-            'href' => $this->url->link('extension/payment', 'token=' . $this->session->data['token'], 'SSL')
+            'text' => $this->language->get('text_extension'),
+            'href' => $this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=payment', true)
         );
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('payment/icepay_basic', 'token=' . $this->session->data['token'], 'SSL')
+            'href' => $this->url->link('extension/payment/icepay_basic', 'token=' . $this->session->data['token'], true)
         );
+
     }
 
     private function getIcepayLanguageKeys() {

@@ -18,7 +18,7 @@ $_['tab_about'] = 'About';
 $_['tab_sendcloud'] = 'SendCloud';
 
 // Text
-$_['text_payment'] = 'Payment';
+$_['text_extension'] = 'Extensions';
 $_['text_success'] = 'Success: You have modified the ICEPAY module settings!';
 $_['text_icepay_basic'] = '<img src="view/image/payment/icepay_basic.png" alt="ICEPAY" title="ICEPAY" />';
 
@@ -45,6 +45,7 @@ $_['entry_cback_status'] = 'Payment Chargeback Status:<br/><span class="help">Re
 $_['entry_refund_status'] = 'Payment Refund Status:<br/><span class="help">Recommended: Refunded</span>';
 
 // Error
+$_['error_permission'] = 'You do not have permission to access this page.';
 $_['error_merchantid'] = 'ICEPAY Merchant ID is required!';
 $_['error_merchantid_incorrect'] = 'ICEPAY Merchant ID must contain 5 digits.';
 $_['error_secretcode'] = 'ICEPAY SecretCode is required!';

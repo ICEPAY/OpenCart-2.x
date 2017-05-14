@@ -9,17 +9,17 @@
 
 define('ICEPAY_MODULE_VERSION', '2.1.0');
 
-class ControllerPaymentIcepayBasic extends Controller
+class ControllerExtensionPaymentIcepayBasic extends Controller
 {
     protected $api;
 
     private function init()
     {
-        $this->load->model('payment/icepay_basic');
+        $this->load->model('extension/payment/icepay_basic');
         $this->load->model('checkout/order');
         $this->load->model('setting/setting');
         // Load language files
-        $this->load->language('payment/icepay_basic');
+        $this->load->language('extension/payment/icepay_basic');
     }
 
     private function showErrorPage($message)
@@ -37,15 +37,13 @@ class ControllerPaymentIcepayBasic extends Controller
         $data['footer'] = $this->load->controller('common/footer');
         $data['header'] = $this->load->controller('common/header');
 
-        if (version_compare(VERSION, '2.2') < 0) {
-            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_error.tpl')) {
-                $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/payment/icepay_error.tpl', $data));
+
+            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/extension/payment/icepay_error.tpl')) {
+                $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/extension/payment/icepay_error.tpl', $data));
             } else {
-                $this->response->setOutput($this->load->view('default/template/payment/icepay_error.tpl', $data));
+                $this->response->setOutput($this->load->view('default/template/extension/payment/icepay_error.tpl', $data));
             }
-        } else {
-            $this->response->setOutput($this->load->view('payment/icepay_error', $data));
-        }
+
 
     }
 
@@ -59,7 +57,7 @@ class ControllerPaymentIcepayBasic extends Controller
         $this->init();
 
         // Delete old pminfo
-        $this->db->query("TRUNCATE TABLE `{$this->model_payment_icepay_basic->getTableWithPrefix('icepay_pminfo')}`");
+        $this->db->query("TRUNCATE TABLE `{$this->model_extension_payment_icepay_basic->getTableWithPrefix('icepay_pminfo')}`");
 
         $params = array();
 
@@ -72,7 +70,7 @@ class ControllerPaymentIcepayBasic extends Controller
             $paramsClean[$key] = $param;
         }
 
-        $this->db->query("DELETE FROM `{$this->model_payment_icepay_basic->getTableWithPrefix('extension')}` WHERE `code` LIKE 'icepay_pm_%'");
+        $this->db->query("DELETE FROM `{$this->model_extension_payment_icepay_basic->getTableWithPrefix('extension')}` WHERE `code` LIKE 'icepay_pm_%'");
 
         $i = 1;
 
@@ -97,10 +95,10 @@ class ControllerPaymentIcepayBasic extends Controller
             // Store
             $store = $this->db->escape($paramsClean['paymentMethodStore'][$key]);
 
-            $this->db->query("INSERT INTO `{$this->model_payment_icepay_basic->getTableWithPrefix('icepay_pminfo')}`
+            $this->db->query("INSERT INTO `{$this->model_extension_payment_icepay_basic->getTableWithPrefix('icepay_pminfo')}`
                 (store_id, active, displayname, readablename, pm_code, geo_zone_id) VALUES ('{$store}', '{$active}', '{$displayName}', '{$pmName}', '{$pmCode}', '{$geoZone}')");
 
-            $this->db->query("INSERT INTO `{$this->model_payment_icepay_basic->getTableWithPrefix('extension')}`
+            $this->db->query("INSERT INTO `{$this->model_extension_payment_icepay_basic->getTableWithPrefix('extension')}`
                 (type, code) VALUES ('payment', 'icepay_pm_{$i}')");
 
             $i++;
@@ -122,18 +120,18 @@ class ControllerPaymentIcepayBasic extends Controller
             die();
         }
 
-        $this->api = $this->model_payment_icepay_basic->loadPaymentMethodService();
+        $this->api = $this->model_extension_payment_icepay_basic->loadPaymentMethodService();
 
         try {
             // Retrieve paymentmethods
             $paymentMethods = $this->api->retrieveAllPaymentmethods()->asArray();
 
             // Delete old rawpmdata
-            $this->db->query("TRUNCATE TABLE `{$this->model_payment_icepay_basic->getTableWithPrefix('icepay_rawpmdata')}`");
+            $this->db->query("TRUNCATE TABLE `{$this->model_extension_payment_icepay_basic->getTableWithPrefix('icepay_rawpmdata')}`");
 
             // Store new rawpmdata
             $serializedRawData = serialize($paymentMethods);
-            $this->db->query("INSERT INTO `{$this->model_payment_icepay_basic->getTableWithPrefix('icepay_rawpmdata')}` (raw_pm_data) VALUES ('{$serializedRawData}')");
+            $this->db->query("INSERT INTO `{$this->model_extension_payment_icepay_basic->getTableWithPrefix('icepay_rawpmdata')}` (raw_pm_data) VALUES ('{$serializedRawData}')");
 
             // Get stores and generate select options
             $stores = $this->model_setting_store->getStores();
@@ -150,7 +148,7 @@ class ControllerPaymentIcepayBasic extends Controller
                     if (isset($paymentMethod['PaymentMethodCode'])) {
                         $pmCode = $paymentMethod['PaymentMethodCode'];
 
-                        $paymentMethodStoredData = $this->db->query("SELECT * FROM `{$this->model_payment_icepay_basic->getTableWithPrefix('icepay_pminfo')}` WHERE `pm_code` = '$pmCode'");
+                        $paymentMethodStoredData = $this->db->query("SELECT * FROM `{$this->model_extension_payment_icepay_basic->getTableWithPrefix('icepay_pminfo')}` WHERE `pm_code` = '$pmCode'");
 
                         if (isset($paymentMethodStoredData->row['displayname'])) {
                             $displayName = $paymentMethodStoredData->row['displayname'];
@@ -162,7 +160,7 @@ class ControllerPaymentIcepayBasic extends Controller
                         $pmActive = false;
 
                         // Check if paymentmethod exists already, if so fetch it and prefill the form with user saved data.
-                        $paymentMethodInfo = $this->db->query("SELECT * FROM`{$this->model_payment_icepay_basic->getTableWithPrefix('icepay_pminfo')}` WHERE `pm_code` = '{$pmCode}' ");
+                        $paymentMethodInfo = $this->db->query("SELECT * FROM`{$this->model_extension_payment_icepay_basic->getTableWithPrefix('icepay_pminfo')}` WHERE `pm_code` = '{$pmCode}' ");
 
                         // Stored data has been found
                         if (count($paymentMethodInfo->row) > 0) {
@@ -235,7 +233,7 @@ class ControllerPaymentIcepayBasic extends Controller
         }
 
         $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-        $url = $this->model_payment_icepay_basic->getURL($order_info, $this->request->post['ic_issuer']);
+        $url = $this->model_extension_payment_icepay_basic->getURL($order_info, $this->request->post['ic_issuer']);
 
         if (!$url) {
             $this->showErrorPage($_SESSION['ICEPAY_ERROR']);
@@ -246,10 +244,10 @@ class ControllerPaymentIcepayBasic extends Controller
 
     public function index()
     {
-        $this->load->model('payment/icepay_basic');
+        $this->load->model('extension/payment/icepay_basic');
 
-        $paymentMethodName = $this->model_payment_icepay_basic->getPaymentMethodName($this->pmCode);
-        $issuers = $this->model_payment_icepay_basic->getIssuers($this->pmCode);
+        $paymentMethodName = $this->model_extension_payment_icepay_basic->getPaymentMethodName($this->pmCode);
+        $issuers = $this->model_extension_payment_icepay_basic->getIssuers($this->pmCode);
 
         $baseURL = defined('HTTPS_SERVER') ? HTTPS_SERVER : HTTP_SERVER;
 
@@ -276,26 +274,26 @@ class ControllerPaymentIcepayBasic extends Controller
         // Postback or Result
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
-                $api = $this->model_payment_icepay_basic->loadPostback();
+                $api = $this->model_extension_payment_icepay_basic->loadPostback();
             } catch (Exception $e) {
                 $this->response->addHeader('HTTP/1.1 400 Bad Request');
                 $this->response->setOutput("Failed to load postback");
             }
 
             if ($api->validate()) {
-                $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
+                $icepay_info = $this->model_extension_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
 
                 if ($icepay_info["status"] === "NEW" || $api->canUpdateStatus($icepay_info["status"])) {
                     $postback = $api->getPostback();
-                    $this->model_payment_icepay_basic->updateStatus($api->getOrderID(), $api->getStatus(), $postback->transactionID);
-                    $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
+                    $this->model_extension_payment_icepay_basic->updateStatus($api->getOrderID(), $api->getStatus(), $postback->transactionID);
+                    $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_extension_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
                 }
             } else {
                 $this->response->addHeader('HTTP/1.1 400 Bad Request');
                 $this->response->setOutput('Server response validation failed');
             }
         } else { //Result
-            $api = $this->model_payment_icepay_basic->loadResult();
+            $api = $this->model_extension_payment_icepay_basic->loadResult();
 
             if (!$api->validate()) {
                 $this->showErrorPage("Server response validation failed");
@@ -307,11 +305,11 @@ class ControllerPaymentIcepayBasic extends Controller
                 return;
             }
 
-            $icepay_info = $this->model_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
+            $icepay_info = $this->model_extension_payment_icepay_basic->getIcepayOrderByID($api->getOrderID());
 
             if ($icepay_info["status"] === "NEW" || $api->getStatus() !== $icepay_info["status"]) {
                 //we haven't received Postback Notification yet or status changed
-                $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
+                $this->model_checkout_order->addOrderHistory($api->getOrderID(), $this->model_extension_payment_icepay_basic->getOpenCartStatus($api->getStatus()), $api->getStatus());
                 $this->response->redirect($this->url->link('checkout/success', '', 'SSL'));
             }
             else if ($icepay_info["status"] === Icepay_StatusCode::SUCCESS || $icepay_info["status"] === Icepay_StatusCode::OPEN || $icepay_info["status"] === Icepay_StatusCode::VALIDATE) {

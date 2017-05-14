@@ -7,6 +7,6 @@
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
-class Controllerpaymenticepaypm5
+class ControllerExtensionPaymentIcepayPm5
 {
 }

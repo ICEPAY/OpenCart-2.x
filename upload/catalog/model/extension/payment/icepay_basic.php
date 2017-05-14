@@ -9,7 +9,7 @@
 
 require_once realpath(dirname(__FILE__)) . '/icepay/icepay_api_webservice.php';
 
-class ModelPaymentIcepayBasic extends Model
+class ModelExtensionPaymentIcepayBasic extends Model
 {
     private $_order = null;
 
