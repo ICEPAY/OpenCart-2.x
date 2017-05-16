@@ -80,8 +80,8 @@ class ModelExtensionPaymentIcepayBasic extends Model
             ->setPaymentMethod($paymentMethodCode)
             ->setIssuer($issuer);
 
-        $api->setSuccessURL($this->config->get('config_url') . 'index.php?route=payment/icepay_basic/result')
-            ->setErrorURL($this->config->get('config_url') . 'index.php?route=payment/icepay_basic/result');
+        $api->setSuccessURL($this->config->get('config_url') . 'index.php?route=extension/payment/icepay_basic/result')
+            ->setErrorURL($this->config->get('config_url') . 'index.php?route=extension/payment/icepay_basic/result');
 
         $transactionObj = null;
 
@@ -269,7 +269,7 @@ class ModelExtensionPaymentIcepayBasic extends Model
 
     public function getMethod($address, $total)
     {
-        $this->load->language('payment/icepay_basic');
+        $this->load->language('extension/payment/icepay_basic');
         $this->load->model('localisation/currency');
 
         $method_data = array();

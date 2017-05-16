@@ -28,7 +28,7 @@ class ControllerExtensionPaymentIcepayBasic extends Controller
         $data['heading_title'] = $this->language->get('error_header');
         $data['text_message'] = $message;
         $data['button_continue'] = $this->language->get('button_continue');
-        $data['continue'] = $this->url->link('checkout/checkout', '', 'SSL');
+        $data['continue'] = $this->url->link('checkout/checkout', '', true);
 
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['column_right'] = $this->load->controller('common/column_right');
@@ -37,12 +37,7 @@ class ControllerExtensionPaymentIcepayBasic extends Controller
         $data['footer'] = $this->load->controller('common/footer');
         $data['header'] = $this->load->controller('common/header');
 
-
-            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/extension/payment/icepay_error.tpl')) {
-                $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/extension/payment/icepay_error.tpl', $data));
-            } else {
-                $this->response->setOutput($this->load->view('default/template/extension/payment/icepay_error.tpl', $data));
-            }
+        $this->response->setOutput($this->load->view('extension/payment/icepay_error', $data));
 
 
     }
@@ -251,20 +246,13 @@ class ControllerExtensionPaymentIcepayBasic extends Controller
 
         $baseURL = defined('HTTPS_SERVER') ? HTTPS_SERVER : HTTP_SERVER;
 
-        $data["action"] = $baseURL . 'index.php?route=payment/icepay_basic/process';
+        $data["action"] = $baseURL . 'index.php?route=extension/payment/icepay_basic/process';
         $data['displayname'] = $paymentMethodName;
         $data['issuers'] = $issuers;
         $data['button_confirm'] = $this->language->get('button_confirm');
 
-        if (version_compare(VERSION, '2.2') < 0) {
-            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/icepay_basic.tpl')) {
-                return $this->load->view($this->config->get('config_template') . '/template/payment/icepay_basic.tpl', $data);
-            } else {
-                return $this->load->view('default/template/payment/icepay_basic.tpl', $data);
-            }
-        } else {
-            return $this->load->view('payment/icepay_basic', $data);
-        }
+
+        return $this->load->view('extension/payment/icepay_basic', $data);
     }
 
     public function result()

@@ -9,7 +9,7 @@
 
 require_once(realpath(dirname(__FILE__)) . '/icepay_basic.php');
 
-class ModelPaymentIcepayPm8 extends ModelPaymentIcepayBasic
+class ModelExtensionPaymentIcepayPm8 extends ModelExtensionPaymentIcepayBasic
 {
     protected $pmCode = 8;
 }
