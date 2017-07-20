@@ -7,7 +7,7 @@
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
-define('ICEPAY_MODULE_VERSION', '2.1.0');
+define('ICEPAY_MODULE_VERSION', '2.2.0');
 
 class ControllerExtensionPaymentIcepayBasic extends Controller
 {

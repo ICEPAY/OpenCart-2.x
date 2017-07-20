@@ -10,7 +10,7 @@
 class ControllerExtensionPaymentIcepayBasic extends Controller
 {
     private $error = array();
-    private $_version = "2.1.0";
+    private $_version = "2.2.0";
 
     public function install() {
         // Create order table

@@ -24,6 +24,7 @@ If you found a repeatable bug, and troubleshooting tips didn't help, then be sur
 
 Version      | Release date   | Changes
 ------------ | -------------- | ------------------------
+2.2.0        | 21/07/2017     | Payment module for OpenCart v2.3.0.2 (compatibility with OpenCart v2.2.x is ot tested)
 2.1.0        | 29/09/2016     | Integration with SendCloud
 2.0.8        | 09/04/2016     | Payment module compatible up to OpenCart 2.2.0.0
 2.0.7        | 25/01/2016     | Payment module compatible up to OpenCart 2.1.0.2<br>Bug Fixes (see details in Development branch)
