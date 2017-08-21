@@ -244,13 +244,10 @@ class ControllerExtensionPaymentIcepayBasic extends Controller
         $paymentMethodName = $this->model_extension_payment_icepay_basic->getPaymentMethodName($this->pmCode);
         $issuers = $this->model_extension_payment_icepay_basic->getIssuers($this->pmCode);
 
-        $baseURL = defined('HTTPS_SERVER') ? HTTPS_SERVER : HTTP_SERVER;
-
-        $data["action"] = $baseURL . 'index.php?route=extension/payment/icepay_basic/process';
+        $data['action'] = $this->url->link('extension/payment/icepay_basic/process', '', true);
         $data['displayname'] = $paymentMethodName;
         $data['issuers'] = $issuers;
         $data['button_confirm'] = $this->language->get('button_confirm');
-
 
         return $this->load->view('extension/payment/icepay_basic', $data);
     }

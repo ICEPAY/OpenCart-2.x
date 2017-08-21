@@ -80,8 +80,8 @@ class ModelExtensionPaymentIcepayBasic extends Model
             ->setPaymentMethod($paymentMethodCode)
             ->setIssuer($issuer);
 
-        $api->setSuccessURL($this->config->get('config_url') . 'index.php?route=extension/payment/icepay_basic/result')
-            ->setErrorURL($this->config->get('config_url') . 'index.php?route=extension/payment/icepay_basic/result');
+        $api->setSuccessURL($this->url->link('extension/payment/icepay_basic/result', '', true))
+            ->setErrorURL($this->url->link('extension/payment/icepay_basic/result', '', true));
 
         $transactionObj = null;
 
