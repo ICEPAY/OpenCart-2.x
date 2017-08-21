@@ -35,6 +35,7 @@ $_['entry_secretcode'] = 'SecretCode:';
 $_['entry_geo_zone'] = 'Geo Zone:';
 $_['entry_status'] = 'Status:';
 $_['entry_sort_order'] = 'Sorteervolgorde:';
+$_['entry_debug'] = 'Debug Logging';
 
 // Status
 $_['entry_new_status'] = 'New Order Status:<br/><span class="help">Geadviseerd: Pending</span>';

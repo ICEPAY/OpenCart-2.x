@@ -75,12 +75,25 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="icepay_basic_sort_order"><?php echo $entry_sort_order; ?></label>
 
                                 <div class="col-sm-10">
                                     <input type="text" name="icepay_basic_sort_order" value="<?php echo $icepay_basic_sort_order; ?>" id="icepay_basic_sort_order" class="form-control" size="3"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-debug"><span data-toggle="tooltip" title="<?php echo $help_debug; ?>"><?php echo $entry_debug; ?></span></label>
+                                <div class="col-sm-10">
+                                    <select name="icepay_basic_debug" id="input-debug" class="form-control">
+                                        <?php if ($icepay_basic_debug) { ?>
+                                        <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+                                        <option value="0"><?php echo $text_disabled; ?></option>
+                                        <?php } else { ?>
+                                        <option value="1"><?php echo $text_enabled; ?></option>
+                                        <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>

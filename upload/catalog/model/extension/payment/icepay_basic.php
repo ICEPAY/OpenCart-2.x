@@ -213,6 +213,7 @@ class ModelExtensionPaymentIcepayBasic extends Model
             }
         } catch (Exception $e) {
             $_SESSION['ICEPAY_ERROR'] = $this->language->get($e->getMessage());
+            $this->log('ICEPAY ERROR ' . $this->language->get($e->getMessage(), 1));
             return false;
         }
 
@@ -361,5 +362,13 @@ class ModelExtensionPaymentIcepayBasic extends Model
     public function getTableWithPrefix($tableName)
     {
         return DB_PREFIX . $tableName;
+    }
+
+    public function log($data, $class_step = 6) {
+        if ($this->config->get('icepay_basic_debug')) {
+            $log = new Log('icepay.log');
+            $backtrace = debug_backtrace();
+            $log->write('ICEPAY debug (' . $backtrace[$class_step]['class'] . '::' . $backtrace[6]['function'] . ') - ' . print_r($data, true));
+        }
     }
 }
