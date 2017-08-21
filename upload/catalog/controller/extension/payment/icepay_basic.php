@@ -3,11 +3,11 @@
 /**
  * @package       ICEPAY Payment Module for OpenCart
  * @author        Ricardo Jacobs <ricardo.jacobs@icepay.com>
- * @copyright     (c) 2016 ICEPAY. All rights reserved.
+ * @copyright     (c) 2017 ICEPAY. All rights reserved.
  * @license       BSD 2 License, see https://github.com/icepay/OpenCart/blob/master/LICENSE
  */
 
-define('ICEPAY_MODULE_VERSION', '2.2.0');
+define('ICEPAY_MODULE_VERSION', '2.2.1');
 
 class ControllerExtensionPaymentIcepayBasic extends Controller
 {
