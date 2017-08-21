@@ -53,6 +53,9 @@ $_['error_secretcode'] = 'ICEPAY SecretCode is vereist!';
 $_['error_secretcode_incorrect'] = 'ICEPAY Merchant ID dient exact 40 karakters lang te zijn.';
 $_['error_no_api_settings'] = 'Error: No merchant ID and/or secret code found.';
 
+// Help
+$_['help_debug'] = 'Enabling debug will write sensitive data to a log file. You should always disable unless instructed otherwise';
+
 //SendCloud Settings
 $_['entry_sendcloud_api_key'] = 'API Public Key:';
 $_['entry_sendcloud_api_secret'] = 'API Secret Key:';

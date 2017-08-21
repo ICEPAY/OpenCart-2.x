@@ -256,6 +256,7 @@ class ControllerExtensionPaymentIcepayBasic extends Controller
             "tab_paymentmethods",
             "tab_sendcloud",
             "tab_about",
+            "help_debug",
         );
 
         return $keys;
