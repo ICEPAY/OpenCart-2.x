@@ -1,6 +1,6 @@
 ![ICEPAY](https://camo.githubusercontent.com/49043ebb42bd9b98941d6013761d4aadcd33f14f/68747470733a2f2f6963657061792e636f6d2f6e6c2f77702d636f6e74656e742f7468656d65732f6963657061792f696d616765732f6865616465722f6c6f676f2e737667)
 
-## Payment Module for OpenCart 2.x
+## Payment Module for OpenCart 2.0.x - 2.2.x
 
 Make payments in your OpenCart webshop possible. Download the special OpenCart webshop module [here](https://github.com/icepay/OpenCart/releases) and you will be able to offer the most frequently used national and international online payment methods.
 
