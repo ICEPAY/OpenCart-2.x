@@ -2,7 +2,7 @@
 
 ## OpenCart 2.x. Payment Module ##
 
-Make payments in your OpenCart webshop possible. Download the special OpenCart webshop module [here](https://github.com/icepay/OpenCart/releases) and you will be able to offer the most frequently used national and international online payment methods.
+Make payments in your OpenCart webshop possible. Download the special OpenCart webshop module [here](https://github.com/icepay/OpenCart/releases) and you will be able to offer the most frequently used national and international online payment methods. An installation and configuration instruction is available [here](https://github.com/ICEPAY/OpenCart-2.x/wiki).
 
 ### Contributing
 
