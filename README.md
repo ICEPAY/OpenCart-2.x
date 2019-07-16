@@ -1,5 +1,7 @@
 ![]( https://icepay.com/app/themes/icepay/dist/images/logos/logo_icepay.svg)
 
+NOTE: PLEASE USE THE NEW API PLUGINS ON https://www.sellxed.com/shop/en/eur/extensions/module/payment-service-provider/icepay.html, WITH THE OLD API NOT ALL PAYMENT METHODS ARE SUPPORTED
+
 ## OpenCart 2.x. Payment Module ##
 
 Make payments in your OpenCart webshop possible. Download the special OpenCart webshop module [here](https://github.com/icepay/OpenCart/releases) and you will be able to offer the most frequently used national and international online payment methods. An installation and configuration instruction is available [here](https://github.com/ICEPAY/OpenCart-2.x/wiki).
